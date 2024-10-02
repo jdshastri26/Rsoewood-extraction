@@ -1,0 +1,93 @@
+import random
+
+class RosewoodOilExtraction:
+    def __init__(self, rosewood_weight, temperature, distillation_time):
+        self.rosewood_weight = rosewood_weight  # Weight of rosewood in kilograms
+        self.oil_content = random.uniform(0.01, 0.03)  # Rosewood yields about 1-3% oil content by weight
+        self.oil_extracted = 0
+        self.temperature = temperature  # Initial temperature in °C
+        self.distillation_time = distillation_time  # Distillation time in hours
+        self.ideal_temp_range = (100, 120)  # Ideal steam distillation temp in °C
+        self.ideal_time_range = (2, 5)  # Ideal distillation time in hours
+
+    def grind_rosewood(self):
+        print("Step 1: Grinding rosewood into fine particles...")
+        # Simulate loss during grinding (5% loss of material)
+        self.rosewood_weight *= 0.95
+        print(f"Rosewood weight after grinding: {self.rosewood_weight:.2f} kg\n")
+
+    def check_temperature(self):
+        print("Step 2: Checking and adjusting temperature...")
+        # Simulate effect of temperature on oil yield
+        if self.temperature < self.ideal_temp_range[0]:
+            print(f"Warning: Temperature too low ({self.temperature}°C). Oil yield reduced.")
+            yield_factor = 0.8  # Low temperature reduces oil yield by 20%
+        elif self.temperature > self.ideal_temp_range[1]:
+            print(f"Warning: Temperature too high ({self.temperature}°C). Oil quality affected.")
+            yield_factor = 0.9  # High temperature slightly reduces yield
+        else:
+            print(f"Temperature is optimal ({self.temperature}°C).")
+            yield_factor = 1.0  # Optimal temperature gives best yield
+        return yield_factor
+
+    def check_distillation_time(self):
+        print("Step 3: Checking distillation time...")
+        # Simulate the effect of time on oil extraction
+        if self.distillation_time < self.ideal_time_range[0]:
+            print(f"Warning: Distillation time too short ({self.distillation_time} hours). Incomplete extraction.")
+            time_factor = 0.7  # Short time reduces oil yield by 30%
+        elif self.distillation_time > self.ideal_time_range[1]:
+            print(f"Distillation time too long ({self.distillation_time} hours). Loss of oil.")
+            time_factor = 0.85  # Long time reduces yield due to evaporation
+        else:
+            print(f"Distillation time is optimal ({self.distillation_time} hours).")
+            time_factor = 1.0  # Optimal time ensures best yield
+        return time_factor
+
+    def steam_distillation(self, yield_factor, time_factor):
+        print("Step 4: Performing steam distillation...")
+        # Calculate potential oil extracted based on yield factor and time factor
+        self.oil_extracted = self.rosewood_weight * self.oil_content * yield_factor * time_factor
+        print(f"Steam distillation complete.\nOil extracted: {self.oil_extracted:.2f} liters\n")
+
+    def collect_oil(self):
+        print("Step 5: Collecting and purifying the extracted oil...")
+        # Simulate some loss in oil collection and purification (10% loss)
+        purified_oil = self.oil_extracted * 0.90
+        print(f"Final purified rosewood oil collected: {purified_oil:.2f} liters\n")
+        return purified_oil
+
+    def evaluate_oil_quality(self, yield_factor, time_factor):
+        print("Step 6: Evaluating oil quality...")
+        # Simple oil quality evaluation based on yield and time factors
+        if yield_factor == 1.0 and time_factor == 1.0:
+            quality = "High"
+        elif yield_factor >= 0.9 and time_factor >= 0.9:
+            quality = "Medium"
+        else:
+            quality = "Low"
+        print(f"Oil quality rating: {quality}\n")
+        return quality
+
+# Simulate oil extraction from a certain amount of rosewood
+def main():
+    # Example: using 100 kg of rosewood, temperature 110°C, distillation time 3 hours
+    rosewood_weight = 100  # kg
+    temperature = 110  # °C
+    distillation_time = 3  # hours
+
+    extraction = RosewoodOilExtraction(rosewood_weight, temperature, distillation_time)
+
+    # Perform the steps of extraction
+    extraction.grind_rosewood()
+    yield_factor = extraction.check_temperature()
+    time_factor = extraction.check_distillation_time()
+    extraction.steam_distillation(yield_factor, time_factor)
+    final_oil = extraction.collect_oil()
+    quality = extraction.evaluate_oil_quality(yield_factor, time_factor)
+
+    print(f"Total rosewood oil extracted from {rosewood_weight} kg of rosewood: {final_oil:.2f} liters")
+    print(f"Final oil quality: {quality}")
+
+if __name__ == "__main__":
+    main()
